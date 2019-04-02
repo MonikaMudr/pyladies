@@ -1,6 +1,8 @@
 from turtle import forward, right, left, exitonclick
 from math import sqrt
 
+#jjkh
+
 
 
 
