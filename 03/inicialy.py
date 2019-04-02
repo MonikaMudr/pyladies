@@ -1,0 +1,5 @@
+jmeno = input('Zadej jmeno: ')
+prijmeni = input('Zadej prijmeni: ')
+J = jmeno[0].upper()
+P = prijmeni[0].upper()
+print(J, P, sep='')
