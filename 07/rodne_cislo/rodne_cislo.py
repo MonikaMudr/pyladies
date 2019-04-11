@@ -8,22 +8,7 @@ def spravny_format(rodne_cislo):
     else:
         return True
 
-'''def nacti_RC():
-    while True:
-        rodne_cislo = input('Zadej rodne cislo ve formatu "xxxxxx/xxxx": ')
-        try:
-            int(rodne_cislo [:-5] + rodne_cislo [7:])
-        except ValueError:
-            print('Zadane rodne cislo neexistuje. Zkus to znovu!')
-        else:
-            return rodne_cislo'''
 
-'''def spravny_format(rodne_cislo):
-    cislo_bez_lomitka = rodne_cislo [:-5] + rodne_cislo [7:]
-        if len(rodne_cislo.split('/')[0]) == 6 and len(rodne_cislo.split('/')[1]) == 4:
-            return True
-        else:
-            return False'''
 
 def delitelnost_11(rodne_cislo):
     "Zjisti, zda je rodne cislo delitelne 11"
