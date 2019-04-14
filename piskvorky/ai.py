@@ -1,5 +1,8 @@
-from piskvorky import tah
 from random import randrange
+
+def tah(herni_pole, cislo_pole, symbol):
+    '''Vrati herni pole s danym symbolem umistenym na danou pozici'''
+    return '{}{}{}'.format(herni_pole[:cislo_pole], symbol, herni_pole[(cislo_pole + 1):])
 def tah_pocitace_bez_strategie(herni_pole, symbol):
     '''Vybere nahodne herni pozici 0-19 a na tu umisti symbol, vrati nove herni pole'''
     while True:
