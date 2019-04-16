@@ -5,6 +5,7 @@ def spravny_format(rodne_cislo):
             raise ValueError
     except ValueError:
         print('Zadane cislo je ve spatnem formatu. Zkus to znovu!')
+        return False
     else:
         return True
 
