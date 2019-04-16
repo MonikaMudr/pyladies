@@ -6,7 +6,9 @@ def tah_pocitace_bez_strategie(herni_pole, symbol):
     '''Vybere nahodne herni pozici 0-19 a na tu umisti symbol, vrati nove herni pole'''
     while True:
         cislo_pole = randrange(0, 20)
-        if herni_pole[cislo_pole] == "-":
+        if '-' not in herni_pole:
+            raise ValueError
+        elif herni_pole[cislo_pole] == "-":
             return tah(herni_pole, cislo_pole, symbol)
 
 def tah_pocitace_strategie_vlevo(herni_pole, symbol, podretezec):
