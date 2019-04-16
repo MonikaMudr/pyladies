@@ -7,8 +7,6 @@ def je_pismeno_ve_slove(pismeno, hadane_slovo):
     '''Zkontroluje, zda je zvolene pismeno v hadanem slove.'''
     if pismeno in hadane_slovo:
         return True
-    else:
-        return False
 
 def vloz_pismeno(herni_pole, pismeno, hadane_slovo):
     '''Vlozi pismeno do slova na prislusnou pozici'''

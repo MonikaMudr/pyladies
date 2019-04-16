@@ -1,4 +1,4 @@
-from random import choice
+
 from sibenice_funkce import vyber_slova, je_pismeno_ve_slove, vloz_pismeno, vyhodnot_prubeh_hry
 
 def test_vyhodnot_prubeh_hry():
