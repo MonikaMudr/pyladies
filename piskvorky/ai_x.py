@@ -27,30 +27,29 @@ def tah_pocitace_strategie_uprostred(herni_pole, symbol, podretezec):
 
 def tah_pocitace(herni_pole, symbol):
 
-    if "-oo" in herni_pole:
-        return tah_pocitace_strategie_vlevo(herni_pole, 'o', "-oo")
-    elif "oo-" in herni_pole:
-        return tah_pocitace_strategie_vpravo(herni_pole, "o", "oo-")
-    elif "o-o" in herni_pole:
-        return tah_pocitace_strategie_uprostred(herni_pole, "o", "o-o")
-    elif "-xx" in herni_pole:
-        return tah_pocitace_strategie_vlevo(herni_pole, 'o', "-xx")
+    if "-xx" in herni_pole:
+        return tah_pocitace_strategie_vlevo(herni_pole, 'x', "-xx")
     elif "xx-" in herni_pole:
-        return tah_pocitace_strategie_vpravo(herni_pole, "o", "xx-")
+        return tah_pocitace_strategie_vpravo(herni_pole, "x", "xx-")
     elif "x-x" in herni_pole:
-        return tah_pocitace_strategie_uprostred(herni_pole, "o", "x-x")
-    elif "-o-" in herni_pole:
-        return tah_pocitace_strategie_vlevo(herni_pole, 'o', "-o-")
+        return tah_pocitace_strategie_uprostred(herni_pole, "x", "x-x")
+    elif "-oo" in herni_pole:
+        return tah_pocitace_strategie_vlevo(herni_pole, 'x', "-oo")
+    elif "oo-" in herni_pole:
+        return tah_pocitace_strategie_vpravo(herni_pole, "x", "oo-")
+    elif "o-o" in herni_pole:
+        return tah_pocitace_strategie_uprostred(herni_pole, "x", "o-o")
     elif "-x-" in herni_pole:
-        return tah_pocitace_strategie_vlevo(herni_pole, 'o', "-x-")
-    elif "-o" in herni_pole:
-        return tah_pocitace_strategie_vlevo(herni_pole, 'o', "-o")
-    elif "o-" in herni_pole:
-        return tah_pocitace_strategie_vpravo(herni_pole, "o", "o-")
+        return tah_pocitace_strategie_vlevo(herni_pole, 'x', "-x-")
+    elif "-o-" in herni_pole:
+        return tah_pocitace_strategie_vlevo(herni_pole, 'x', "-o-")
     elif "-x" in herni_pole:
-        return tah_pocitace_strategie_vlevo(herni_pole, "o", "-x")
+        return tah_pocitace_strategie_vlevo(herni_pole, 'x', "-x")
     elif "x-" in herni_pole:
-        return tah_pocitace_strategie_vpravo(herni_pole, "o", "x-")
+        return tah_pocitace_strategie_vpravo(herni_pole, "x", "x-")
+    elif "-o" in herni_pole:
+        return tah_pocitace_strategie_vlevo(herni_pole, "x", "-o")
+    elif "o-" in herni_pole:
+        return tah_pocitace_strategie_vpravo(herni_pole, "x", "o-")
     else:
         return tah_pocitace_bez_strategie(herni_pole, 'o')
-    
