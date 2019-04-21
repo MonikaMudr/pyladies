@@ -3,7 +3,8 @@ from ai import tah_pocitace, tah_pocitace_strategie_vlevo, tah_pocitace_strategi
             
 
 def piskvorky1D():
-    herni_pole = "-" * 20
+    delka_pole = 20
+    herni_pole = "-" * delka_pole
     print('herni pole: ', herni_pole)
     cislo_kola = 1
     while True:
@@ -17,7 +18,7 @@ def piskvorky1D():
             print(kolo_pole)
             print('Remiza')
             break
-        herni_pole = tah_pocitace(herni_pole, "o")
+        herni_pole = tah_pocitace(herni_pole, "o", delka_pole)
         kolo_pole = '{}.kolo: {}'.format(cislo_kola, herni_pole)
         if vyhodnot(herni_pole) == "o":
             print(kolo_pole)
