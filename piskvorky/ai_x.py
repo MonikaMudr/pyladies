@@ -2,10 +2,10 @@ from random import randrange
 from pole import tah
 
 
-def tah_pocitace_bez_strategie(herni_pole, symbol):
+def tah_pocitace_bez_strategie(herni_pole, symbol, delka_pole):
     '''Vybere nahodne herni pozici 0-19 a na tu umisti symbol, vrati nove herni pole'''
     while True:
-        cislo_pole = randrange(0, 20)
+        cislo_pole = randrange(0, delka_pole)
         if '-' not in herni_pole:
             raise ValueError
         elif herni_pole[cislo_pole] == "-":
@@ -25,7 +25,7 @@ def tah_pocitace_strategie_uprostred(herni_pole, symbol, podretezec):
     cislo_pole = herni_pole.index(podretezec) + 1
     return tah(herni_pole, cislo_pole, symbol)
 
-def tah_pocitace(herni_pole, symbol):
+def tah_pocitace(herni_pole, symbol, delka_pole):
 
     if "-xx" in herni_pole:
         return tah_pocitace_strategie_vlevo(herni_pole, 'x', "-xx")
