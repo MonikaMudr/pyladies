@@ -1,5 +1,5 @@
 from obrazky import slovnik_sibenice
-from sibenice_funkce import vyber_slova, je_pismeno_ve_slove, vloz_pismeno, vyhodnot_prubeh_hry
+from sibenice_funkce import vyber_slova, vloz_pismeno, vyhodnot_prubeh_hry, kolikrat_ve_slove
 
 
 hadane_slovo = vyber_slova()
@@ -14,9 +14,10 @@ while True:
         print('Gratuluji, vyhral jsi!')
         break
     elif vyhodnot_prubeh_hry(herni_pole, neuspesne_pokusy) == 'pokracuj':
-        pismeno = input('Zadej pismeno: ')
-        if je_pismeno_ve_slove(pismeno, hadane_slovo):
-            herni_pole = vloz_pismeno(herni_pole, pismeno, hadane_slovo)
+        pismeno = input('Zadej pismeno: ')   
+        if pismeno in hadane_slovo:
+            kolikrat = kolikrat_ve_slove(pismeno, hadane_slovo)
+            herni_pole = vloz_pismeno(herni_pole, pismeno, hadane_slovo, kolikrat)
             print('hadane_slovo: ', herni_pole)
             print(slovnik_sibenice[neuspesne_pokusy])
             

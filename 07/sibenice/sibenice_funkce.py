@@ -1,17 +1,25 @@
 from random import choice
 def vyber_slova():
     '''pocitac vybira slovo ze seznamu, se kterym se bude hrat'''
-    seznam_slov = ['pes', 'balon', 'mispule']
+    seznam_slov = ['kolobezka', 'oko', 'emental']
     return choice(seznam_slov)
-def je_pismeno_ve_slove(pismeno, hadane_slovo):
-    '''Zkontroluje, zda je zvolene pismeno v hadanem slove.'''
-    if pismeno in hadane_slovo:
-        return True
 
-def vloz_pismeno(herni_pole, pismeno, hadane_slovo):
+def kolikrat_ve_slove(pismeno, hadane_slovo):
+    '''Zjisti kolikrat je pismeno ve slove'''
+    kolikrat = 0
+    for i in hadane_slovo:
+        if i == pismeno:
+            kolikrat += 1
+    return kolikrat
+
+def vloz_pismeno(herni_pole, pismeno, hadane_slovo, kolikrat):
     '''Vlozi pismeno do slova na prislusnou pozici'''
-    cislo_pozice = hadane_slovo.index(pismeno)
-    return '{}{}{}'.format(herni_pole[:cislo_pozice], pismeno, herni_pole[(cislo_pozice + 1):])
+    zacatek = 0
+    for i in range(kolikrat):
+        cislo_pozice = hadane_slovo.index(pismeno, zacatek)
+        herni_pole = '{}{}{}'.format(herni_pole[:cislo_pozice], pismeno, herni_pole[(cislo_pozice + 1):])
+        zacatek = cislo_pozice + 1
+    return herni_pole
 
 def vyhodnot_prubeh_hry(herni_pole, neuspesne_pokusy):
     '''Vezme herni pole a vyhodnoti, zda hrac jeste neprohral (neuspesne_pokusy jsou 10), ci nevyhral (ve slove
