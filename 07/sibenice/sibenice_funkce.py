@@ -4,6 +4,16 @@ def vyber_slova():
     seznam_slov = ['kolobezka', 'oko', 'emental']
     return choice(seznam_slov)
 
+def nacti_pismeno():
+    '''Nacita pismeno od uzivatele tak dlouho, dokud nezada pismeno'''
+    abeceda = 'abcdefghijklmnopqrstuvwxyz'
+    while True:
+        pismeno = input('Zadej pismeno: ')
+        if len(pismeno) == 1 and pismeno in abeceda:
+            return pismeno
+        else:
+            print ('To nebylo pismeno. Zkus to znovu!')
+            
 def kolikrat_ve_slove(pismeno, hadane_slovo):
     '''Zjisti kolikrat je pismeno ve slove'''
     kolikrat = 0
