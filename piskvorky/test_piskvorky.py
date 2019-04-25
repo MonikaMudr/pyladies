@@ -26,7 +26,7 @@ def test_tah_pocitace_strategie_vpravo2():
         tah_pocitace_strategie_vpravo('oxoxoxoxoxoxoxoxoxox', 'o', 'oo-')
 
 def test_tah_pocitace():
-    assert tah_pocitace('-----x---oo---------', 'o', 20) == '-----x--ooo---------'
+    assert tah_pocitace('-----x---oo---------', 'o', 20) == '-x---x--ooo---------'
     assert tah_pocitace("-x--", 'o', 4) == 'ox--'
 
 
