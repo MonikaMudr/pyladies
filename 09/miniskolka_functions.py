@@ -72,10 +72,9 @@ def execute_activity(child, activity, dic_children):
     elif activity == '5':
         while True:
                 which_friend = input('Which friend do you want {} to play with'
-                                     ' (write the corresponding number '
-                                     '1) Maruska, 2) Kacenka 3) Jenicek or '
-                                     '4) Pepicek)? '
-                                     .format(dic_children[child].name))
+                                     ' (write the corresponding number {})? '
+                                     .format(dic_children[child].name,
+                                             child_election(dic_children)))
                 if child != which_friend:
                     try:
                         return (dic_children[child]
