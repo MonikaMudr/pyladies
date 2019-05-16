@@ -20,6 +20,17 @@ def create_dic_children(children):
         dic_children[number] = child
     return dic_children
 
+def create_dic_activity(activities):
+    """Creates a dictionary of activities,
+    like {'1': 'eat', '2': 'play'...}
+    """
+    number_activities = []
+    for number in range(1, len(activities)+1):
+        number_activities.append(str(number))
+    dic_activities = {}
+    for activity, nuber in zip(activities, number_children):
+        dic_activities[number] = activity
+    return dic_activities
 
 def chose_child_activity(dic_children):
     """The function asks user to chose a child and an activity, which the
