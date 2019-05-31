@@ -3,12 +3,13 @@ from pyglet import clock
 from random import randrange
 from miniskolka_functions2 import toy_election, food_election, child_election
 
+pyglet.resource.path = ['./resources']
+pyglet.resource.reindex()
+
 height = 460
 width = 1280
 meals = ['pancake', 'icecream', 'chips', 'pasta']
 toys = ['dolly', 'barbie', 'lego', 'car']
-
-
 
 
 class Child:
@@ -78,6 +79,15 @@ class Child:
             self.energy -= change
 
 
+    def delete_child(self, children, dic_children):
+        if self.energy == 0 and self.mood == 0:
+            index_child = children.index(self)
+            del children[index_child]
+            dic_children_updated = dict(dic_children)
+            del dic_children[str(index_child+1)]
+            return dic_children_updated
+        
+
 class Girl(Child):
     def introduction(self):
         """It prints small intro about the child."""
@@ -111,7 +121,7 @@ class EatActivity(Activity):
         """It sets the game_label to the question asking the user to choose
         the food, which the child is going to eat.
         """
-        food_text = 'Which food do you want {} to eat. Press the corresponding letter {}: '.format(self.child.name, food_election(meals))
+        food_text = 'Which food do you want {} to eat. Press the corresponding letter {} '.format(self.child.name, food_election(meals))
         game_label.text = food_text
 
     def execute(self, game_label):
@@ -120,7 +130,7 @@ class EatActivity(Activity):
         the change of the children's state (positive change - laughing,
         negative change - crying)
         """
-        self.child.sprite.x = width//10
+        self.child.sprite.x = width//20
         if type(self.child) == Girl:
             if self.food == self.child.favourite_food:
                 self.child.less_hungry()
@@ -158,7 +168,7 @@ class PlayActivity(Activity):
         of its sprite and it plays sound which corresponds to the change of
         the children's state (positive change-laughing, negative change-crying)
         """
-        self.child.sprite.x = width//4
+        self.child.sprite.x = width//1.2
         if self.toy == self.child.favourite_toy:
             self.child.laughing.play()
             self.child.happier()
@@ -183,7 +193,7 @@ class SleepActivity(Activity):
         It changes position of its sprite and it plays laughing.
         """
         self.child.laughing.play()
-        self.child.sprite.x = width//1.2
+        self.child.sprite.x = width//5
         self.child.more_energy()
         sleep_text = '{} is sleeping.'.format(self.child.name)
         game_label.text = sleep_text
@@ -207,8 +217,8 @@ class PlayWithFriend(Activity):
         child and of its friend sprite and it plays laughing.
         """
         self.child.laughing.play()
-        self.child.sprite.x = width//2
-        self.other_child.sprite.x = width//2 - 100
+        self.child.sprite.x = width//1.2
+        self.other_child.sprite.x = width//1.2 - 80
         self.child.happier()
         self.other_child.happier()
         self.other_child.sprite.opacity = 255
@@ -216,3 +226,29 @@ class PlayWithFriend(Activity):
         game_label.text = play_friend_text
 
 
+# loading images of children
+maruska_happy = pyglet.resource.image('maruska150.png')
+maruska_sad = pyglet.resource.image('maruska_sad_140.png')
+kacenka_happy = pyglet.resource.image('kacenka150.png')
+kacenka_sad = pyglet.resource.image('kacenka_sad_140.png')
+pepicek_happy = pyglet.resource.image('pepicek150.png')
+pepicek_sad = pyglet.resource.image('pepicek_sad_140.png')
+jenicek_happy = pyglet.resource.image('jenicek_150.png')
+jenicek_sad = pyglet.resource.image('jenicek_sad_140.png')
+
+
+children = []
+children.append(Girl('Maruska', 'pancake', 'dolly',
+                     maruska_sad, maruska_happy))
+children.append(Girl('Kacenka', 'icecream', 'barbie',
+                     kacenka_sad, kacenka_happy))
+children.append(Boy('Jenicek', 'pasta', 'lego',
+                    jenicek_sad, jenicek_happy))
+children.append(Boy('Pepicek', 'chips', 'car',
+                    pepicek_sad, pepicek_happy))
+
+activities = []
+activities.append(SleepActivity('sleep'))
+activities.append(PlayActivity('play', 'toy'))
+activities.append(EatActivity('eat', 'food'))
+activities.append(PlayWithFriend('play with a friend', 'other_child'))

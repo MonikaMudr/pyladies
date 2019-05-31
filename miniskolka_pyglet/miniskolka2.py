@@ -12,7 +12,7 @@ from miniskolka_functions2 import (
                                    children_set_position, create_icons_children, activity_election)
 from miniskolka_classes_activity import (Child, Boy, Girl, Activity,
                                          SleepActivity, PlayActivity,
-                                         EatActivity, PlayWithFriend)
+                                         EatActivity, PlayWithFriend, children, activities)
 from pyglet.window import key
 
 pyglet.resource.path = ['./resources']
@@ -27,7 +27,7 @@ toys = ['dolly', 'barbie', 'lego', 'car']
 # loading images
 classroom = pyglet.resource.image('trida2a.jpg')
 icon = pyglet.resource.image('icon.png')
-bed_image = pyglet.resource.image('bed200.png')
+bed_image = pyglet.resource.image('bed150.png')
 table_image = pyglet.resource.image('table90.png')
 chair_image = pyglet.resource.image('chair110.png')
 bear_image = pyglet.resource.image('bear50.png')
@@ -36,52 +36,32 @@ bebe_image = pyglet.resource.image('bebe50.png')
 ball_image = pyglet.resource.image('ball50.png')
 cubes_image = pyglet.resource.image('cubes70.png')
 
-# loading images of children
-maruska_happy = pyglet.resource.image('maruska150.png')
-maruska_sad = pyglet.resource.image('maruska_sad_110.png')
-kacenka_happy = pyglet.resource.image('kacenka150.png')
-kacenka_sad = pyglet.resource.image('kacenka_sad_110.png')
-pepicek_happy = pyglet.resource.image('pepicek150.png')
-pepicek_sad = pyglet.resource.image('pepicek_sad_110.png')
-jenicek_happy = pyglet.resource.image('jenicek_150.png')
-jenicek_sad = pyglet.resource.image('jenicek_sad_110.png')
+
 
 # creating sprites of the things
-bed2 = pyglet.sprite.Sprite(bed_image, x=width//6, y=height//6,
+bed2 = pyglet.sprite.Sprite(bed_image, x=width//6, y=height//5,
                             batch=batch_objects)
-table = pyglet.sprite.Sprite(table_image, x=width//80, y=height//6,
-                             batch=batch_objects)
 chair = pyglet.sprite.Sprite(chair_image, x=width//60, y=height//6,
                              batch=batch_objects)
-bear = pyglet.sprite.Sprite(bear_image, x=width - 50, y=height//6,
+table = pyglet.sprite.Sprite(table_image, x=width//30, y=height//6,
+                             batch=batch_objects)
+bear = pyglet.sprite.Sprite(bear_image, x=width - 70, y=height//5.5,
                             batch=batch_objects)
-train = pyglet.sprite.Sprite(train_image, x=width - 80, y=height//6,
+train = pyglet.sprite.Sprite(train_image, x=width - 160, y=height//5,
                              batch=batch_objects)
 bebe = pyglet.sprite.Sprite(bebe_image, x=width - 120, y=height//6,
                             batch=batch_objects)
+cubes = pyglet.sprite.Sprite(cubes_image, x=width - 250, y=height//5,
+                             batch=batch_objects)
 ball = pyglet.sprite.Sprite(ball_image, x=width - 200, y=height//6,
                             batch=batch_objects)
-cubes = pyglet.sprite.Sprite(cubes_image, x=width - 250, y=height//6,
-                             batch=batch_objects)
 
 
-children = []
-children.append(Girl('Maruska', 'pancake', 'dolly',
-                     maruska_sad, maruska_happy))
-children.append(Girl('Kacenka', 'icecream', 'barbie',
-                     kacenka_sad, kacenka_happy))
-children.append(Boy('Jenicek', 'pasta', 'lego',
-                    jenicek_sad, jenicek_happy))
-children.append(Boy('Pepicek', 'chips', 'car',
-                    pepicek_sad, pepicek_happy))
 
-dic_children = create_dic_children(children)
 
-activities = []
-activities.append(SleepActivity('sleep'))
-activities.append(PlayActivity('play', 'toy'))
-activities.append(EatActivity('eat', 'food'))
-activities.append(PlayWithFriend('play with a friend', 'other_child'))
+
+
+
 
 dic_activities = create_dic_activities(activities)
 
@@ -106,7 +86,6 @@ def reset3(game_label, initial_text, children):
 
 reset(chosen_child_activity)
 reset3(game_label, initial_text, children)
-
 
 
 
@@ -181,18 +160,19 @@ def on_key_press(symbol, modifiers):
                     chosen_child_activity[1].toy = toys[2]
             elif symbol == key.H:
                     chosen_child_activity[1].toy = toys[3]
-            elif symbol == key.I:
+            elif symbol == key._5:
                     chosen_child_activity[1].other_child = children[0]
-            elif symbol == key.J:
+            elif symbol == key._6:
                     chosen_child_activity[1].other_child = children[1]      
-            elif symbol == key.K:
+            elif symbol == key._7:
                     chosen_child_activity[1].other_child = children[2]
-            elif symbol == key.L:
+            elif symbol == key._8:
                     chosen_child_activity[1].other_child = children[3]   
 
 #game update
 @window.event
 def obnov_stav(dt):
+    dic_children = create_dic_children(children)
     for child in children:
         child.obnov_stav()  # in case that the child is tired, unhappy or hungry it change it sprite to the sad one.
     if chosen_child_activity[1] != None:
@@ -202,7 +182,8 @@ def obnov_stav(dt):
             child.sprite.opacity = 255
         else:
             child.sprite.opacity = 190
-
+    for child in children:
+        dic_children_update = child.delete_child(children, dic_children)
    
     
     if chosen_child_activity[0] != None and chosen_child_activity[1] != None:
@@ -226,9 +207,11 @@ def obnov_stav(dt):
 
 
 
+def change_state_scheduled(dt):
+    for child in children:
+        child.change_state()
 
 
-print(pyglet.clock.get_fps())
 
 '''print('There are {} children in your class:'.format(len(children)))
 for child in children:
@@ -243,8 +226,9 @@ chosen_activity.additional_question(dic_children)
 chosen_activity.execute()
 for child in children:
     child.change_state()'''
-
+pyglet.clock.schedule_interval(change_state_scheduled, 20)
 pyglet.clock.schedule_interval(obnov_stav, 1/60)
+
 
 pyglet.app.run()
 print('Hotovo!')

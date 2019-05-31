@@ -47,11 +47,15 @@ def toy_election(toys):
     """Generates string which is used in the method additional question
     of the PlayActivity class. The string looks like 1) dolly 2) barbie...
     """
-    cislo = 1
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    letters = []
+    letter_index = 4
+    for _ in range (len(toys)):
+        letters.append(alphabet[letter_index])
+        letter_index += 1
     elect = ''
-    for toy in toys:
-        elect += '{}) {} '.format(cislo, toy)
-        cislo += 1
+    for letter, toy in zip(letters, toys):
+        elect += '{}) {} '.format(letter, toy)
     return elect
 
 
@@ -59,12 +63,17 @@ def food_election(meals):
     """Generates string which is used in the method additional question
     of the EatActivity class. The string looks like 1) pancake 2) icecream...
     """
-    cislo = 1
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    letters = []
+    letter_index = 0
+    for _ in range (len(meals)):
+        letters.append(alphabet[letter_index])
+        letter_index += 1
     elect = ''
-    for meal in meals:
-        elect += '{}) {} '.format(cislo, meal)
-        cislo += 1
+    for letter, meal in zip(letters, meals):
+        elect += '{}) {} '.format(letter, meal)
     return elect
+
 
 
 def create_dic_children(children):
@@ -100,7 +109,7 @@ def child_election(dic_children):
     """
     elect = ''
     for number in dic_children:
-        elect += '{}) {} '.format(number, dic_children[number].name)
+        elect += '{}) {} '.format(int(number) + 4, dic_children[number].name)
     return elect
 
 
