@@ -224,7 +224,9 @@ class PlayWithFriend(Activity):
         self.other_child.sprite.opacity = 255
         play_friend_text = '{} and {} are enjoying themselves.'.format(self.child.name, self.other_child.name)
         game_label.text = play_friend_text
-
+    def play_alone(self, game_label):
+        self.child.sadder()
+        game_label.text = '{} doesn\'t like playing alone'.format(self.child.name)
 
 # loading images of children
 maruska_happy = pyglet.resource.image('maruska150.png')

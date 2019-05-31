@@ -197,9 +197,14 @@ def obnov_stav(dt):
                     reset(chosen_child_activity)
                     pyglet.clock.schedule_once(reset2, 4)
             elif type(chosen_child_activity[1]) == PlayWithFriend and chosen_child_activity[1].other_child != None:
-                    chosen_child_activity[1].execute(game_label)
-                    reset(chosen_child_activity)
-                    pyglet.clock.schedule_once(reset2, 4)
+                    if chosen_child_activity[1].child != chosen_child_activity[1].other_child:
+                        chosen_child_activity[1].execute(game_label)
+                        reset(chosen_child_activity)
+                        pyglet.clock.schedule_once(reset2, 4)
+                    else:
+                        chosen_child_activity[1].play_alone(game_label)
+                        reset(chosen_child_activity)
+                        pyglet.clock.schedule_once(reset2, 4)
             elif type(chosen_child_activity[1]) == SleepActivity:
                     chosen_child_activity[1].execute(game_label)
                     reset(chosen_child_activity)
