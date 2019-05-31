@@ -69,9 +69,9 @@ chosen_child_activity = [children[1], None]
 game_label = pyglet.text.Label('', x=15, y=38, font_size=14, bold=True, multiline=True, width=1200)
 
 def reset2(t):
-    game_label.text = initial_text
-    children_set_position(children)
     chosen_child_activity[0] = children[1]
+    game_label.text = create_initial_text()
+    children_set_position(children)
 
 # creating labels
 def create_initial_text():
@@ -93,7 +93,7 @@ window = pyglet.window.Window(1280, 500, 'Miniskolka',
                               style=window.Window.WINDOW_STYLE_DEFAULT)
 
 
-    
+
 @window.event
 def on_draw():
     window.clear()
