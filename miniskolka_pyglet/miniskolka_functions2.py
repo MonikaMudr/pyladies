@@ -1,5 +1,6 @@
 import pyglet
 from pyglet import clock
+from pyglet import gl
 
 
 height = 460
@@ -17,30 +18,6 @@ def play_again():
 def update_activity(activities, chosen_activity):
     pass
 
-
-def chose_child_activity(dic_children, dic_activities):
-    """The function asks user to chose a child and an activity, which the
-    child will do. It returns a tuple (chosen_child, chosen_activity).
-    """
-    while True:
-        try:
-            chose_child = input('Who do you want to take care of. Write '
-                                'the corresponding number {}: '
-                                .format(child_election(dic_children)))
-            chose_activity = input('What do you want {} to do. Write '
-                                   'the corresponding number {}: '
-                                   .format(dic_children[chose_child].name,
-                                           activity_election(dic_activities)))
-        except KeyError:
-            print('Try it again! Write the corresponding numbers.')
-        else:
-            try:
-                chosen_child = dic_children[chose_child]
-                chosen_activity = dic_activities[chose_activity]
-            except KeyError:
-                print('Try it again! Write the corresponding numbers.')
-            else:
-                return (chosen_child, chosen_activity)
 
 
 def toy_election(toys):
@@ -113,6 +90,10 @@ def child_election(dic_children):
     return elect
 
 
+
+
+
+
 def activity_election(dic_activities):
     """The function generates string, which is used in chose_child_activity
     function. It returns name of the activities, with corresponding number
@@ -124,25 +105,61 @@ def activity_election(dic_activities):
     return elect
 
 
+def  create_intro_label(children, batch_labels):
+    """It creates label, which is displayed at the very begining of the game.
+    The label disapears after pressing some key."""
+
+    intro_text = 'There are {} children in your class.\n'.format(len(children))
+    for child in children:
+        intro_text += child.introduction()
+    intro_text += 'Press R to start the game.'
+    intro_label = pyglet.text.Label(intro_text, font_name = 'Bradley Hand ITC', x=width//2, y=height//2, color=[108,53,21,255], font_size=18, bold=True, batch=batch_labels, multiline=True, width=900, anchor_x='center', anchor_y='center')
+    return intro_label
+
+
+def create_game_name_label(batch_labels):
+    game_name_label = pyglet.text.Label('Miniskolka', x=width//1.58, y=height//1.1, font_name = 'Bradley Hand ITC', color=[108,53,21,255], font_size=40, bold=True, batch=batch_labels, anchor_x='center', anchor_y='center')
+    return game_name_label
+
+
+def create_rectangle_intro(batch_gl_objects):
+    vertex_list = batch_gl_objects.add_indexed(4, pyglet.gl.GL_TRIANGLES, None,
+    [0, 1, 2, 0, 2, 3],
+    ('v2i', (100, 0, 1150, 0, 1150, 500, 100, 500)), ('c3B', (209, 254, 211, 255, 255, 255, 209, 254, 211, 255, 255, 255)))
+    return vertex_list
+
+def game_over(batch_gl_objects, game_name_label):
+    vertex_list = create_rectangle_intro(batch_gl_objects)
+    game_name_label.delete()
+    game_over_label = pyglet.text.Label('Game over', x=width//2, y=height//2, font_name = 'Bradley Hand ITC', color=[108,53,21,255], font_size=40, bold=True, batch=batch_gl_objects, anchor_x='center', anchor_y='center')
+    return (vertex_list, game_over_label)
+
+
+def draw_rectangle_background(x1, y1, x2, y2):
+    gl.glColor3f(0.96, 0.95, 0.81)
+    gl.glBegin(gl.GL_TRIANGLE_FAN)
+    gl.glVertex2f(int(x1), int(y1))
+    gl.glVertex2f(int(x1), int(y2))
+    gl.glVertex2f(int(x2), int(y2))
+    gl.glVertex2f(int(x2), int(y1))  
+    gl.glEnd()
+    gl.glColor3f(1,1,1)
+
 def create_batch_labels(children):
     """Create batch of the labels, which displays states of the children"""
     i = 1
     batch_labels = pyglet.graphics.Batch()
     for child in children:
-        pyglet.text.Label('{}: '.format(child.name), x=50,
-                          y=490 - i*19, bold=True, font_size=14,
-                          font_name="Times New Roman", batch=batch_labels)
-        pyglet.text.Label('mood: {}'.format('*' * child.mood), x=135,
-                          y=490 - i*19, font_size=14,
-                          font_name="Times New Roman", bold=True,
+        pyglet.text.Label('{}: '.format(child.name), x=50, color=[108,53,21,255], font_name = 'Bradley Hand ITC',
+                          y=490 - i*19, bold=True, font_size=12, batch=batch_labels)
+        pyglet.text.Label('mood: {}'.format('*' * child.mood), x=135, font_name = 'Bradley Hand ITC',
+                          y=490 - i*19, font_size=12, bold=True, color=[108,53,21,255],
                           batch=batch_labels)
-        pyglet.text.Label('energy: {}'.format('*' * child.energy), x=260,
-                          y=490 - i*19, font_size=14,
-                          font_name="Times New Roman",
+        pyglet.text.Label('energy: {}'.format('*' * child.energy), x=260, color=[108,53,21,255],
+                          y=490 - i*19, font_size=12, font_name = 'Bradley Hand ITC',
                           bold=True, batch=batch_labels)
-        pyglet.text.Label('hunger: {}'.format('*' * child.hunger), x=390,
-                          y=490 - i*19, font_size=14,
-                          font_name="Times New Roman",
+        pyglet.text.Label('hunger: {}'.format('*' * child.hunger), x=390, color=[108,53,21,255],
+                          y=490 - i*19, font_size=12, font_name = 'Bradley Hand ITC',
                           bold=True, batch=batch_labels)
         i += 1
     batch_labels.draw()
@@ -175,6 +192,3 @@ def reset(chosen_child_activity):
     chosen_child_activity[1] = None
 
 
-
-def wait():
-    pass

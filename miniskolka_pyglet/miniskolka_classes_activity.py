@@ -91,14 +91,12 @@ class Child:
 class Girl(Child):
     def introduction(self):
         """It prints small intro about the child."""
-        print('{}, her favourite food is {} and she prefers to play with {}.'
-              .format(self.name, self.favourite_food, self.favourite_toy))
+        return '{}, her favourite food is {} and she prefers to play with {}.\n'.format(self.name, self.favourite_food, self.favourite_toy)
 
 
 class Boy(Child):
     def introduction(self):
-        print('{}, his favourite food is {} and he prefers to play with {}.'
-              .format(self.name, self.favourite_food, self.favourite_toy))
+        return '{}, his favourite food is {} and he prefers to play with {}.\n'.format(self.name, self.favourite_food, self.favourite_toy)
 
 
 class Activity:

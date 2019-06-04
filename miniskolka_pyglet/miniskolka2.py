@@ -7,9 +7,10 @@ activity. Every round you select a child and an activity.
 import pyglet
 from pyglet import window, clock
 from miniskolka_functions2 import (
-                                   create_dic_activities, reset, wait,
-                                   create_dic_children, create_batch_labels,
-                                   children_set_position, create_icons_children, activity_election)
+                                   create_dic_activities, reset, create_intro_label, create_rectangle_intro,
+                                   create_dic_children, create_batch_labels, game_over,
+                                   children_set_position, create_icons_children, activity_election,
+                                   draw_rectangle_background, create_game_name_label)
 from miniskolka_classes_activity import (Child, Boy, Girl, Activity,
                                          SleepActivity, PlayActivity,
                                          EatActivity, PlayWithFriend, children, activities)
@@ -20,9 +21,15 @@ pyglet.resource.reindex()
 height = 460
 width = 1280
 batch_objects = pyglet.graphics.Batch()
+batch_labels = pyglet.graphics.Batch()
+batch_gl_objects = pyglet.graphics.Batch()
 meals = ['pancake', 'icecream', 'chips', 'pasta']
 toys = ['dolly', 'barbie', 'lego', 'car']
-
+chosen_child_activity = [children[1], None]
+game_label = pyglet.text.Label('', x=50, y=38, font_size=17, bold=True, multiline=True, width=1200, color=[108,53,21,255], font_name = 'Bradley Hand ITC')
+dic_activities = create_dic_activities(activities)
+vertex_list = create_rectangle_intro(batch_gl_objects)
+game_name_label = create_game_name_label(batch_labels)
 
 # loading images
 classroom = pyglet.resource.image('trida2a.jpg')
@@ -59,17 +66,11 @@ ball = pyglet.sprite.Sprite(ball_image, x=width - 200, y=height//6,
 
 
 
-
-
-
-
-dic_activities = create_dic_activities(activities)
-
-chosen_child_activity = [children[1], None]
-game_label = pyglet.text.Label('', x=15, y=38, font_size=14, bold=True, multiline=True, width=1200)
-
 def reset2(t):
-    chosen_child_activity[0] = children[1]
+    try:
+        chosen_child_activity[0] = children[0]
+    except IndexError:
+        game_over(batch_gl_objects, game_name_label)
     game_label.text = create_initial_text()
     children_set_position(children)
 
@@ -78,25 +79,25 @@ def create_initial_text():
     initial_text = """Press right/left key to choose the child.\nWhat do you want {} to do. Press the corresponding number {} """.format(chosen_child_activity[0].name, activity_election(dic_activities))
     return initial_text
 
-initial_text = create_initial_text()
 
-def reset3(game_label, initial_text, children):
-    game_label.text = initial_text
+def reset_initial(game_label, children):
+    game_label.text = create_initial_text()
     children_set_position(children)
 
-reset(chosen_child_activity)
-reset3(game_label, initial_text, children)
+
+reset_initial(game_label, children)
 
 
 
 window = pyglet.window.Window(1280, 500, 'Miniskolka',
                               style=window.Window.WINDOW_STYLE_DEFAULT)
 
-
+intro_label = create_intro_label(children, batch_labels)
 
 @window.event
 def on_draw():
     window.clear()
+    draw_rectangle_background(0, 0, 1280, 500)
     classroom.blit(0, 58)
     '''window.set_icon(icon)'''
     batch_objects.draw()
@@ -107,9 +108,11 @@ def on_draw():
     for icon2 in icons:
         icon2.draw()
     game_label.draw()
+    batch_gl_objects.draw()
+    batch_labels.draw()
 
 
-## napsat jako metodu aktivity, ktera vybere ze seznamu children 
+
 @window.event
 def on_key_press(symbol, modifiers):
         """Defines how the child and activity are chosen."""
@@ -143,6 +146,10 @@ def on_key_press(symbol, modifiers):
                 chosen_child_activity[1] = activities[2]
         elif symbol == key._4:
                 chosen_child_activity[1] = activities[3]
+        elif symbol == key.R:
+                intro_label.delete()
+                vertex_list.delete()
+                pyglet.clock.schedule_interval(change_state_scheduled, 20)
         if chosen_child_activity[1] != None:
             if symbol == key.A:
                     chosen_child_activity[1].food = meals[0]
@@ -172,21 +179,22 @@ def on_key_press(symbol, modifiers):
 #game update
 @window.event
 def obnov_stav(dt):
-    dic_children = create_dic_children(children)
-    for child in children:
-        child.obnov_stav()  # in case that the child is tired, unhappy or hungry it change it sprite to the sad one.
-    if chosen_child_activity[1] != None:
-        chosen_child_activity[1].child = chosen_child_activity[0] # It sets child argument of activity to the choosen child
-    for child in children:     # It sets the opacity of the chosen child to maximum.
-        if child in chosen_child_activity:
-            child.sprite.opacity = 255
-        else:
-            child.sprite.opacity = 190
-    for child in children:
-        dic_children_update = child.delete_child(children, dic_children)
+    if children:
+        dic_children = create_dic_children(children)
+        for child in children:
+            child.obnov_stav()  # in case that the child is tired, unhappy or hungry it change it sprite to the sad one.
+        if chosen_child_activity[1] != None:
+            chosen_child_activity[1].child = chosen_child_activity[0] # It sets child argument of activity to the choosen child
+        for child in children:     # It sets the opacity of the chosen child to maximum.
+            if child in chosen_child_activity:
+                child.sprite.opacity = 255
+            else:
+                child.sprite.opacity = 190
+        for child in children:
+            child.delete_child(children, dic_children)
    
     
-    if chosen_child_activity[0] != None and chosen_child_activity[1] != None:
+        if chosen_child_activity[0] != None and chosen_child_activity[1] != None:
             chosen_child_activity[1].additional_question(dic_children, game_label)
             if type(chosen_child_activity[1]) == PlayActivity and chosen_child_activity[1].toy != None:
                     chosen_child_activity[1].execute(game_label)
@@ -209,6 +217,8 @@ def obnov_stav(dt):
                     chosen_child_activity[1].execute(game_label)
                     reset(chosen_child_activity)
                     pyglet.clock.schedule_once(reset2, 4)
+    else:
+        game_over(batch_gl_objects, game_name_label)
 
 
 
@@ -231,7 +241,6 @@ chosen_activity.additional_question(dic_children)
 chosen_activity.execute()
 for child in children:
     child.change_state()'''
-pyglet.clock.schedule_interval(change_state_scheduled, 20)
 pyglet.clock.schedule_interval(obnov_stav, 1/60)
 
 
