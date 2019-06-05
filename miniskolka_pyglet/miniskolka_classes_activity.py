@@ -3,13 +3,13 @@ from pyglet import clock
 from random import randrange
 from miniskolka_functions2 import toy_election, food_election, child_election
 
-pyglet.resource.path = ['./resources']
+pyglet.resource.path = ['./resources'] #defines path to imagines.
 pyglet.resource.reindex()
 
 height = 460
 width = 1280
-meals = ['pancake', 'icecream', 'chips', 'pasta']
-toys = ['dolly', 'barbie', 'lego', 'car']
+meals = ['pancake', 'icecream', 'chips', 'pasta'] # favourite meals of children.
+toys = ['dolly', 'barbie', 'lego', 'car'] # favourite toys of children
 
 
 class Child:
@@ -30,7 +30,7 @@ class Child:
 
 
 # analysis of the state:
-    def obnov_stav(self):
+    def evaluate_sprite_image(self):
         """Evaluates state of the child. It changes its sprite image
         accordingly (sad or happy image).
         """
@@ -38,17 +38,17 @@ class Child:
             self.sprite.image = self.img_sad
         else:
             self.sprite.image = self.img_happy
-       
-    
+
+
 # changes of the state:
     def happier(self):
-        """Increases mood of the child."""
+        """Increases mood of the child and plays happy sound."""
         self.laughing.play()
         if self.mood < 6:
             self.mood += 1
 
     def sadder(self):
-        """Decreases mood of the child."""
+        """Decreases mood of the child and plays sad sound."""
         self.crying.play()
         if self.mood > 0:
             self.mood -= 1
@@ -78,25 +78,29 @@ class Child:
         if self.energy > 0:
             self.energy -= change
 
-
     def delete_child(self, children, dic_children):
+        """If the child is too unhappy and tired, it removes it from a list
+        and a dictionary.
+        """
         if self.energy == 0 and self.mood == 0:
             index_child = children.index(self)
             del children[index_child]
-            dic_children_updated = dict(dic_children)
             del dic_children[str(index_child+1)]
-            return dic_children_updated
-        
+
 
 class Girl(Child):
     def introduction(self):
         """It prints small intro about the child."""
-        return '{}, her favourite food is {} and she prefers to play with {}.\n'.format(self.name, self.favourite_food, self.favourite_toy)
+        return ('{}, her favourite food is {} and she prefers to play with {}.'
+                '\n'.format(self.name, self.favourite_food,
+                            self.favourite_toy))
 
 
 class Boy(Child):
     def introduction(self):
-        return '{}, his favourite food is {} and he prefers to play with {}.\n'.format(self.name, self.favourite_food, self.favourite_toy)
+        return ('{}, his favourite food is {} and he prefers to play with {}.'
+                '\n'.format(self.name, self.favourite_food,
+                            self.favourite_toy))
 
 
 class Activity:
@@ -104,7 +108,7 @@ class Activity:
         self.name = name
         child = None
 
-    def update_activity(self, chosen_child):
+    def set_child_of_activity(self, chosen_child): # NENI NIKDE POUZITO
         """It sets the child parameter of the Activity class to
         the variable chosen_child."""
         self.child = chosen_child
@@ -116,10 +120,12 @@ class EatActivity(Activity):
         self.food = None
 
     def additional_question(self, dic_children, game_label):
-        """It sets the game_label to the question asking the user to choose
-        the food, which the child is going to eat.
+        """It changes text of the game_label. It asks about food, which the
+        child is eating.
         """
-        food_text = 'Which food do you want {} to eat. Press the corresponding letter {} '.format(self.child.name, food_election(meals))
+        food_text = ('Which food do you want {} to eat. Press the '
+                     'corresponding letter {} '
+                     .format(self.child.name, food_election(meals)))
         game_label.text = food_text
 
     def execute(self, game_label):
@@ -134,18 +140,24 @@ class EatActivity(Activity):
                 self.child.less_hungry()
                 self.child.more_energy()
                 self.child.laughing.play()
-                eat_girl_positive = '{}: "Mmm, I really like {}."'.format(self.child.name, self.food)
+                eat_girl_positive = ('{}: "Mmm, I really like {}."'
+                                     .format(self.child.name, self.food))
                 game_label.text = eat_girl_positive
             else:
                 self.child.crying.play()
                 self.child.sadder()
-                eat_girl_negative = '{}: "Eww, I hate {}, I\'m not going to eat it." {}\'s favourite food is {}.'.format(self.child.name, self.food, self.child.name, self.child.favourite_food)
+                eat_girl_negative = ('{}: "Eww, I hate {}, I\'m not going to '
+                                     'eat it." {}\'s favourite food is {}.'
+                                     .format(self.child.name, self.food,
+                                             self.child.name,
+                                             self.child.favourite_food))
                 game_label.text = eat_girl_negative
         else:
             self.child.laughing.play()
             self.child.less_hungry()
             self.child.more_energy()
-            eat_boy_text = '{}: "Mmm, {} is delicious. I like everything."'.format(self.child.name, self.food)
+            eat_boy_text = ('{}: "Mmm, {} is delicious. I like everything."'
+                            .format(self.child.name, self.food))
             game_label.text = eat_boy_text
 
 
@@ -156,9 +168,11 @@ class PlayActivity(Activity):
 
     def additional_question(self, dic_children, game_label):
         """It asks user to choose a toy, which the child is going
-        to play with.
+        to play with. It changes text of the game_label.
         """
-        toy_text = 'Which toy do you want {} to play with. Press the corresponding letter {}: '.format(self.child.name, toy_election(toys))
+        toy_text = ('Which toy do you want {} to play with. Press the '
+                    'corresponding letter {}: '
+                    .format(self.child.name, toy_election(toys)))
         game_label.text = toy_text
 
     def execute(self, game_label):
@@ -171,19 +185,25 @@ class PlayActivity(Activity):
             self.child.laughing.play()
             self.child.happier()
             self.child.less_energy()
-            toy_positive_text = '{} is happily playing with the {}.'.format(self.child.name, self.child.favourite_toy)
+            toy_positive_text = ('{} is happily playing with the {}.'
+                                 .format(self.child.name,
+                                         self.child.favourite_toy))
             game_label.text = toy_positive_text
         else:
             self.child.crying.play()
             self.child.sadder()
             self.child.less_energy()
-            toy_negative_text = '{} doesn\'t like playing with {}. {}\'s favourite toy is {}.'.format(self.child.name, self.toy, self.child.name, self.child.favourite_toy)
+            toy_negative_text = ('{} doesn\'t like playing with {}. {}\'s '
+                                 'favourite toy is {}.'
+                                 .format(self.child.name, self.toy,
+                                         self.child.name,
+                                         self.child.favourite_toy))
             game_label.text = toy_negative_text
 
 
 class SleepActivity(Activity):
     def additional_question(self, dic_children, game_label):
-        """No additional info is needed. It passes"""
+        """No additional info is needed. It passes."""
         pass
 
     def execute(self, game_label):
@@ -204,9 +224,12 @@ class PlayWithFriend(Activity):
 
     def additional_question(self, dic_children, game_label):
         """It asks user to choose a friend, whom the child is going
-        to play with.
+        to play with. It changes the game_label text.
         """
-        other_child_text = 'Which friend do you want {} to play with.Write the corresponding number {}: '.format(self.child.name, child_election(dic_children))
+        other_child_text = ('Which friend do you want {} to play with. '
+                            'Write the corresponding number {}: '
+                            .format(self.child.name,
+                                    child_election(dic_children)))
         game_label.text = other_child_text
 
     def execute(self, game_label):
@@ -214,38 +237,25 @@ class PlayWithFriend(Activity):
         after playing together. It changes position of the sprite of the
         child and of its friend sprite and it plays laughing.
         """
-        self.child.laughing.play()
-        self.child.sprite.x = width//1.2
-        self.other_child.sprite.x = width//1.2 - 80
-        self.child.happier()
-        self.other_child.happier()
-        self.other_child.sprite.opacity = 255
-        play_friend_text = '{} and {} are enjoying themselves.'.format(self.child.name, self.other_child.name)
-        game_label.text = play_friend_text
-    def play_alone(self, game_label):
-        self.child.sadder()
-        game_label.text = '{} doesn\'t like playing alone'.format(self.child.name)
-
-# loading images of children
-maruska_happy = pyglet.resource.image('maruska150.png')
-maruska_sad = pyglet.resource.image('maruska_sad_140.png')
-kacenka_happy = pyglet.resource.image('kacenka150.png')
-kacenka_sad = pyglet.resource.image('kacenka_sad_140.png')
-pepicek_happy = pyglet.resource.image('pepicek150.png')
-pepicek_sad = pyglet.resource.image('pepicek_sad_140.png')
-jenicek_happy = pyglet.resource.image('jenicek_150.png')
-jenicek_sad = pyglet.resource.image('jenicek_sad_140.png')
-
-
-children = []
-children.append(Girl('Maruska', 'pancake', 'dolly',
-                     maruska_sad, maruska_happy))
-children.append(Girl('Kacenka', 'icecream', 'barbie',
-                     kacenka_sad, kacenka_happy))
-children.append(Boy('Jenicek', 'pasta', 'lego',
-                    jenicek_sad, jenicek_happy))
-children.append(Boy('Pepicek', 'chips', 'car',
-                    pepicek_sad, pepicek_happy))
+        if self.child != self.other_child:
+            self.child.less_energy()
+            self.other_child.less_energy()
+            self.child.laughing.play()
+            self.child.sprite.x = width//1.2
+            self.other_child.sprite.x = width//1.2 - 80
+            self.child.happier()
+            self.other_child.happier()
+            self.other_child.sprite.opacity = 255
+            play_friend_text = ('{} and {} are enjoying themselves.'
+                                .format(self.child.name,
+                                        self.other_child.name))
+            game_label.text = play_friend_text
+        else:
+            self.child.less_energy()
+            self.other_child.less_energy()
+            self.child.sadder()
+            game_label.text = ('{} doesn\'t like playing alone'
+                               .format(self.child.name))
 
 activities = []
 activities.append(SleepActivity('sleep'))
