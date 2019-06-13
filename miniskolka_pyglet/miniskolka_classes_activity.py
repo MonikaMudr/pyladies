@@ -77,6 +77,8 @@ class Child:
             self.hunger += change
         if self.energy > 0:
             self.energy -= change
+        if self.mood > 0:
+            self.mood -= change
 
     def delete_child(self, children, dic_children):
         """If the child is too unhappy and tired, it removes it from a list

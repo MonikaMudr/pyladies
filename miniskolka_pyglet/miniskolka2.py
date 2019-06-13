@@ -181,7 +181,7 @@ def on_key_press(symbol, modifiers):
     elif symbol == key.R:
         intro_label.delete()
         vertex_list.delete()
-        pyglet.clock.schedule_interval(change_state_scheduled, 20) # It starts to change state of the children every 20 seconds.
+        pyglet.clock.schedule_interval(change_state_scheduled, 30) # It starts to change state of the children every 20 seconds.
     if chosen_child_activity[1] != None:
         if symbol == key.A:
             chosen_child_activity[1].food = meals[0]

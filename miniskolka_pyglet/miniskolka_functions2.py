@@ -95,7 +95,7 @@ def create_intro_label(children, batch_labels):
     intro_text = 'There are {} children in your class.\n'.format(len(children))
     for child in children:
         intro_text += child.introduction()
-    intro_text += 'Press R to start take care of them.'
+    intro_text += 'Press R to start taking care of them.'
     intro_label = pyglet.text.Label(intro_text, font_name='Bradley Hand ITC',
                                     x=width//2, y=height//2,
                                     color=[108, 53, 21, 255], font_size=18,
