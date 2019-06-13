@@ -30,21 +30,12 @@ width = 1280
 
 # lists
 children = []
-activities = []
 meals = ['pancake', 'icecream', 'chips', 'pasta']
 toys = ['dolly', 'barbie', 'lego', 'car']
 chosen_child_activity = [None, None] # it saves input from user (chosen child and activity).
 
-# filling the children and activities list and
+# filling the children list and
 # making dictionaries of children and activities.
-# Activities:
-activities.append(SleepActivity('sleep'))
-activities.append(PlayActivity('play', 'toy'))
-activities.append(EatActivity('eat', 'food'))
-activities.append(PlayWithFriend('play with a friend', 'other_child'))
-
-dic_activities = create_dic_activities(activities)
-# Children:
 maruska_happy = pyglet.resource.image('maruska150.png')
 maruska_sad = pyglet.resource.image('maruska_sad_140.png')
 kacenka_happy = pyglet.resource.image('kacenka150.png')
@@ -60,6 +51,7 @@ pepicek = Boy('Pepicek', 'chips', 'car', pepicek_sad, pepicek_happy)
 children_append(children, maruska, kacenka, jenicek, pepicek)
 
 create_dic_children(children)
+dic_activities = create_dic_activities(activities)
 
 # pyglet objects
 batch_objects = pyglet.graphics.Batch()  # Contains not changing objects.

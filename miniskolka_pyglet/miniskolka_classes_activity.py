@@ -173,7 +173,7 @@ class PlayActivity(Activity):
         to play with. It changes text of the game_label.
         """
         toy_text = ('Which toy do you want {} to play with. Press the '
-                    'corresponding letter {}: '
+                    'corresponding letter {} '
                     .format(self.child.name, toy_election(toys)))
         game_label.text = toy_text
 
@@ -229,7 +229,7 @@ class PlayWithFriend(Activity):
         to play with. It changes the game_label text.
         """
         other_child_text = ('Which friend do you want {} to play with. '
-                            'Write the corresponding number {}: '
+                            'Write the corresponding number {} '
                             .format(self.child.name,
                                     child_election(dic_children)))
         game_label.text = other_child_text
@@ -256,7 +256,7 @@ class PlayWithFriend(Activity):
             self.child.less_energy()
             self.other_child.less_energy()
             self.child.sadder()
-            game_label.text = ('{} doesn\'t like playing alone'
+            game_label.text = ('{} doesn\'t like playing alone.'
                                .format(self.child.name))
 
 activities = []
