@@ -242,10 +242,7 @@ def children_append(children, maruska, kacenka, jenicek, pepicek):
 
 def reset_initial(game_label, children, chosen_child_activity, dic_activities, batch_gl_objects, batch_labels):
     """It sets some initial parameters of the game."""
-    chosen_child_activity[0] = children[0]
     children_set_position(children)
-    game_label.text = create_initial_text(chosen_child_activity,
-                                          dic_activities)
     vertex_list = create_rectangle_intro(batch_gl_objects)
     intro_label = create_intro_label(children, batch_labels)
     game_name_label = create_game_name_label(batch_labels)

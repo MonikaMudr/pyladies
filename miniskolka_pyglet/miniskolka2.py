@@ -112,7 +112,7 @@ vertex_list, intro_label, game_name_label = reset_initial(game_label, children,
 														  batch_labels)
 
 
-window = pyglet.window.Window(1280, 500, 'Miniskolka',
+window = pyglet.window.Window(width, height+40, 'Miniskolka',
 							  style=window.Window.WINDOW_STYLE_DEFAULT)
 
 @window.event
@@ -143,25 +143,22 @@ def on_key_press(symbol, modifiers):
     if symbol == key.RIGHT:
         try:
             chosen_child_activity[0] = children[(child_index_list + 1)]
-            initial_text = create_initial_text(chosen_child_activity,
-											   dic_activities)
-            game_label.text = initial_text
         except IndexError:  # In case that we are at the end of the list.
             chosen_child_activity[0] = children[0]
+        else:
             initial_text = create_initial_text(chosen_child_activity,
 											   dic_activities)
             game_label.text = initial_text
     elif symbol == key.LEFT:
         try:
             chosen_child_activity[0] = children[child_index_list - 1]
-            initial_text = create_initial_text(chosen_child_activity,
-											   dic_activities)
-            game_label.text = initial_text
         except IndexError:  # In case that we are at the beggining of the list.
             chosen_child_activity[0] = children[len(children)]
+        else:
             initial_text = create_initial_text(chosen_child_activity,
 											   dic_activities)
             game_label.text = initial_text
+            
     elif symbol == key._1:
         chosen_child_activity[1] = activities[0]
     elif symbol == key._2:
@@ -170,10 +167,14 @@ def on_key_press(symbol, modifiers):
         chosen_child_activity[1] = activities[2]
     elif symbol == key._4:
         chosen_child_activity[1] = activities[3]
-    elif symbol == key.R:
-        intro_label.delete()
-        vertex_list.delete()
-        pyglet.clock.schedule_interval(change_state_scheduled, 30) # It starts to change state of the children every 20 seconds.
+    if chosen_child_activity[0] == None and chosen_child_activity[1] == None:
+        if symbol == key.R:
+            intro_label.delete()
+            vertex_list.delete()
+            chosen_child_activity[0] = children[0]
+            game_label.text = create_initial_text(chosen_child_activity,
+                                          dic_activities)
+            pyglet.clock.schedule_interval(change_state_scheduled, 30) # It starts to change state of the children every 20 seconds.
     if chosen_child_activity[1] != None:
         if symbol == key.A:
             chosen_child_activity[1].food = meals[0]
