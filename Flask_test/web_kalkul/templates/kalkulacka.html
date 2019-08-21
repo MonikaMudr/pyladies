@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titulek %}
+Moje kalkulacka
+{% endblock %}
+
+{% block obsah %}
+<form method="POST" action="{{ url_for("index") }}">
+    <label for="prvni">První číslo</label>
+    <input type="text" name="prvni">
+    <label for="druhe">Druhé číslo</label>
+    <input type="text" name="druhe">
+    <input type="submit" name="operace" value="plus">
+    <input type="submit" name="operace" value="minus">
+    <input type="submit" name="operace" value="krat">
+    <input type="submit" name="operace" value="deleno">
+</form>
+{% endblock %}
